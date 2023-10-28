@@ -4,8 +4,13 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const app = express();
 // 1) Middlewares
-app.use(morgan('dev')); // Logging Middleware
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev')); // Logging Middleware
+}
+
 app.use(express.json()); //Middleware to get the request body req.body in post methods
+app.use(express.static(`${__dirname}/public`)); //Serving static files
+
 app.use((req, res, next) => {
   console.log('Hello from the middleware');
   next();
@@ -27,6 +32,8 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+
+//
 // 4) Start Server
 // const port = 3001;
 // app.listen(port, () => console.log(`App running on port ${port}.....`));

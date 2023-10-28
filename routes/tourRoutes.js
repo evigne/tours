@@ -1,15 +1,14 @@
 const express = require('express');
 const tourController = require('../controllers/tourController');
 
-const fs = require('fs');
-
 const router = express.Router();
+router.param('id', tourController.checkID); //Param middleware
 
 // app.route('/api/v1/tours').get(getAllTours).post(createTour);
 router
   .route('/')
   .get(tourController.getAllTours)
-  .post(tourController.createTour);
+  .post(tourController.checkBody, tourController.createTour);
 
 // app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour);
 router
